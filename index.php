@@ -14,8 +14,24 @@ if (!isset($_REQUEST['controller'])) {
 
     $controller = $_REQUEST['controller'];
     $action = $_REQUEST['action'];
-    require_once $path_controller . "controller/" . $controller . "_controller.php";
-    $controller = ucwords($controller) . 'Controller';
-    $controller = new $controller;
-    call_user_func(array($controller, $action));
+    $file = $path_controller . "controller/" . $controller . "_controller.php";
+    if (is_file($file)) {
+        // verifica si el archivo controlador existe
+        require_once $file;
+
+        try {
+            // comprueba que la accion este registrada
+            $controller = ucwords($controller) . 'Controller';
+            $controller = new $controller;
+            call_user_func(array($controller, $action));
+        } catch (\Throwable $th) {
+            require_once $path_controller . "controller/error_controller.php";
+            $controller = new ErrorController();
+            $controller->index();
+        }
+    } else {
+        require_once $path_controller . "controller/error_controller.php";
+        $controller = new ErrorController();
+        $controller->index();
+    }
 }

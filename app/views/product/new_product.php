@@ -138,6 +138,7 @@
                 Registra nuevo producto
             </h3>
             <form id="new_product" class="form">
+                <input type="hidden" id="token" value="<?php echo $_SESSION['token'] ?>">
                 <div class="input--group">
                     <label for="codigo">Código</label>
                     <input type="text" class="input--form" name="codigo" id="codigo" required>
@@ -162,7 +163,14 @@
                     <label for="precio_p">Precio proveedor</label>
                     <input type="number" step="any" class="input--form" name="precio_p" id="precio_p" value="0">
                 </div>
-
+                <div class="input--group">
+                    <label for="categories">Categoría</label>
+                    <select name="categoria" id="categoria" class="input--form">
+                        <?php foreach ($categorias as $categoria) : ?>
+                        <option value="<?=$categoria->id?>"><?=$categoria->nombre?></option>
+                            <?php endforeach; ?>
+                    </select>
+                </div>
                 <div class="input--group--file">
                     <label for="imagen" class="file--custom">
                         <i class="fa-solid fa-upload"></i>
@@ -179,6 +187,7 @@
             </form>
         </section>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="app/assets/js/alert.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -214,17 +223,14 @@
         function save() {
             // envio de datos por fetch
             let data = get_data();
-            fetch("index.php?controller=product&action=post_save_product", {
-                    method: "POST",
-                    body: data,
+            let url = "index.php?controller=product&action=post_save_product";
+            axios.post(url, data)
+                .then(response => {
+                    console.log(response.data)
                 })
-                .then((response) => response.json())
-                .then((result) => {
-                    console.log("Success:", result);
+                .catch(error => {
+                    console.log("Mensaje error " + error)
                 })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
         }
 
         function get_data() {
@@ -235,6 +241,8 @@
             let precio_u = document.querySelector("#precio_u");
             let precio_p = document.querySelector("#precio_p");
             let imagen = document.querySelector("#imagen");
+            let token = document.querySelector("#token");
+            let categoria =document.querySelector("#categoria");
             let data = new FormData();
             data.append("codigo", codigo.value);
             data.append("nombre", nombre.value);
@@ -242,6 +250,8 @@
             data.append("precio_u", precio_u.value);
             data.append("precio_p", precio_p.value);
             data.append("imagen", imagen.files[0]);
+            data.append("token", token.value);
+            data.append("categoria", categoria.value);
             return data;
         }
 

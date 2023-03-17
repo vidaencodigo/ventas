@@ -2,7 +2,7 @@
 
 /** Zona Horaria */
 date_default_timezone_set('US/Central');
-
+session_start();
 $path_controller = "app/";
 
 if (!isset($_REQUEST['controller'])) {

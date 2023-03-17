@@ -55,7 +55,7 @@
             padding: 10px 15px;
             border-radius: 5px;
             border: solid 1px var(--purple-1);
-            font-weight: 500;
+            font-weight: 700;
         }
 
 
@@ -167,8 +167,8 @@
                     <label for="categories">Categoría</label>
                     <select name="categoria" id="categoria" class="input--form">
                         <?php foreach ($categorias as $categoria) : ?>
-                        <option value="<?=$categoria->id?>"><?=$categoria->nombre?></option>
-                            <?php endforeach; ?>
+                            <option value="<?= $categoria->id ?>"><?= $categoria->nombre ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="input--group--file">
@@ -220,17 +220,18 @@
             });
         })
 
-        function save() {
+        const save = async () => {
             // envio de datos por fetch
             let data = get_data();
             let url = "index.php?controller=product&action=post_save_product";
-            axios.post(url, data)
-                .then(response => {
-                    console.log(response.data)
-                })
-                .catch(error => {
-                    console.log("Mensaje error " + error)
-                })
+            try {
+                let resp = await axios.post(url, data)
+                console.log(response.data)
+                document.querySelector("#new_product").reset();
+            } catch (error) {
+                console.log("Mensaje error " + error)
+                document.querySelector("#new_product").reset();
+            }
         }
 
         function get_data() {
@@ -242,7 +243,7 @@
             let precio_p = document.querySelector("#precio_p");
             let imagen = document.querySelector("#imagen");
             let token = document.querySelector("#token");
-            let categoria =document.querySelector("#categoria");
+            let categoria = document.querySelector("#categoria");
             let data = new FormData();
             data.append("codigo", codigo.value);
             data.append("nombre", nombre.value);

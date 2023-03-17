@@ -1,4 +1,5 @@
 <?php
+require_once "app/controller/manejadores.php";
 require_once "app/models/categorias.php";
 require_once "app/models/producto.php";
 class ProductController
@@ -22,16 +23,15 @@ class ProductController
     {
 
         $token = $_REQUEST['token'];
+        $imgContenido = null;
 
+        EventManager::token_validation($token);
 
-        if (!$token || $token !== $_SESSION['token']) {
-            // show an error message 
-
-            echo json_encode(["message" => "Token invalido"]);
-            exit;
+        if (isset($_FILES['imagen'])) {
+            $image = $_FILES['imagen']['tmp_name'];
+            $imgContenido = file_get_contents($image);
         }
-        $image = $_FILES['imagen']['tmp_name'];
-        $imgContenido = file_get_contents($image);
+
         $nuevo_producto = new Product();
         $nuevo_producto->codigo = $_REQUEST['codigo'];
         $nuevo_producto->nombre = $_REQUEST['nombre'];
@@ -41,7 +41,9 @@ class ProductController
         $nuevo_producto->imagen = $imgContenido;
         $nuevo_producto->id_categoria = $_REQUEST['categoria'];
         $nuevo_producto->nuevo();
-        echo json_encode(array("message" => $_REQUEST['codigo']));
+        echo json_encode(array("message" => "Exito"));
         exit;
     }
+
+    
 }

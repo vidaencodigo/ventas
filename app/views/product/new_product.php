@@ -10,129 +10,55 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/3d68344ae4.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="app/assets/css/styles.css">
     <link rel="stylesheet" href="app/assets/css/alert.css">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        :root {
-            --purple-1: #712cf9;
-        }
-
-        body {
-            font-weight: 500;
-        }
-
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 1em;
-        }
-
+        /** end custom file input */
         .form {
             display: flex;
             flex-direction: column;
             gap: 8px;
+            width: 60%;
         }
-
-        /**
-        inputs */
-        .input--group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .input--form {
-            padding: 10px 15px;
-            border-radius: 5px;
-            border: solid 1px var(--purple-1);
-            font-weight: 700;
-        }
-
-
-        .success {
-            width: 100%;
-        }
-
-        .button {
-            cursor: pointer;
-            outline: none;
-            border: none;
-            font-family: 'Montserrat', sans-serif;
-            padding: 10px 20px;
-            background-color: #5468ff;
-            color: #fff;
-            font-weight: 600;
-            border-radius: 5px;
-        }
-
-        .button:hover {
-            background-color: #6459dd;
-        }
-
-        .button:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(115, 103, 240, 0.5);
-        }
-
-        .button:active {
-            background-color: #483cd7;
-        }
-
-        /** file input custom */
-        .file--form {
-            display: none;
-        }
-
-        .file--custom {
-            cursor: pointer;
-            color: var(--purple-1);
-
-            border: solid 2px var(--purple-1);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            width: 100%;
-            background-color: white;
-            padding: 10px 15px;
-            font-size: 20px;
-            font-weight: bolder;
-        }
-
-        .file--custom i {
-            font-size: 22px;
-        }
-
-        .file--text {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /** end custom file input */
 
         .formulario {
+            width: 80%;
             padding: 10px;
-            min-width: 40%;
             display: flex;
             flex-direction: column;
+            align-items: center;
             gap: 16px;
+            
         }
     </style>
 </head>
 
 <body>
-    <div class="container c_alert">
+    <nav class="nav">
+        <div class="nav--container">
+            <div class="brand">
+                Ventas
+            </div>
+        </div>
+    </nav>
+    <main class="main c_alert">
+        <aside class="menu--lateral">
+            <ul class="nav--lateral">
+                <li>
+                    <a href="#" class="link">
+                        <i class="fa-solid fa-store"></i>
+                        Ventas
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="index.php?controller=product&action=get_form_new" class="link">
+                        <i class="fa-solid fa-file"></i>
+                        Productos
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
         <section class="formulario">
             <h3>
                 Registra nuevo producto
@@ -141,7 +67,12 @@
                 <input type="hidden" id="token" value="<?php echo $_SESSION['token'] ?>">
                 <div class="input--group">
                     <label for="codigo">Código</label>
-                    <input type="text" class="input--form" name="codigo" id="codigo" required>
+                    <div class="icon--input">
+                        <span>
+                            <i class="fa-solid fa-barcode"></i>
+                        </span>
+                        <input type="text" name="codigo" id="codigo" placeholder="Escribe el código..." required>
+                    </div>
                 </div>
 
                 <div class="input--group">
@@ -156,12 +87,22 @@
 
                 <div class="input--group">
                     <label for="precio_u">Precio unitario</label>
-                    <input type="number" step="any" class="input--form" name="precio_u" id="precio_u" value="0">
+                    <div class="icon--input">
+                        <span>
+                            <i class="fa-solid fa-dollar-sign"></i>
+                        </span>
+                        <input type="number" step="any" name="precio_u" id="precio_u" value="0">
+                    </div>
                 </div>
 
                 <div class="input--group">
                     <label for="precio_p">Precio proveedor</label>
-                    <input type="number" step="any" class="input--form" name="precio_p" id="precio_p" value="0">
+                    <div class="icon--input">
+                        <span>
+                            <i class="fa-solid fa-dollar-sign"></i>
+                        </span>
+                        <input type="number" step="any" name="precio_p" id="precio_p" value="0">
+                    </div>
                 </div>
                 <div class="input--group">
                     <label for="categories">Categoría</label>
@@ -186,11 +127,40 @@
                 </div>
             </form>
         </section>
-    </div>
+
+    </main>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="app/assets/js/alert.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            const btn_save = document.querySelector("#save");
+            read_file();
+            btn_save.addEventListener("click", () => {
+                valida_guarda();
+            });
+        })
+
+        function valida_guarda() {
+            // evento boton guardar
+            if (!valida()) {
+                // crea alerta  si la validacion falla
+                const alerta = new MyAlert();
+                alerta.text = "Completa los campos requerids (nombre, código)";
+                alerta.type_a = "error";
+                alerta.btn_text = "Cerrar"
+                alerta.create__alert();
+            } else {
+                const alerta = new MyAlert();
+                alerta.text = "Guardado";
+                alerta.type_a = "success";
+                alerta.btn_text = "Cerrar"
+                alerta.create__alert();
+                save();
+            }
+        }
+
+        function read_file() {
             // lectura de archivos en input file
             let archivo = document.querySelector('.file--form');
             let file_text = document.querySelector('.file--text');
@@ -200,26 +170,7 @@
                 file_text.innerHTML = name;
             });
 
-            document.querySelector("#save").addEventListener("click", () => {
-                // evento boton guardar
-                if (!valida()) {
-                    // crea alerta  si la validacion falla
-                    const alerta = new MyAlert();
-                    alerta.text = "Completa los campos requerids (nombre, código)";
-                    alerta.type_a = "error";
-                    alerta.btn_text = "Cerrar"
-                    alerta.create__alert();
-                } else {
-                    const alerta = new MyAlert();
-                    alerta.text = "Guardado";
-                    alerta.type_a = "success";
-                    alerta.btn_text = "Cerrar"
-                    alerta.create__alert();
-                    save();
-                }
-            });
-        })
-
+        }
         const save = async () => {
             // envio de datos por fetch
             let data = get_data();
@@ -228,9 +179,11 @@
                 let resp = await axios.post(url, data)
                 console.log(response.data)
                 document.querySelector("#new_product").reset();
+                document.querySelector('.file--text').innerHTML = "Elije imagen...";
             } catch (error) {
                 console.log("Mensaje error " + error)
                 document.querySelector("#new_product").reset();
+                document.querySelector('.file--text').innerHTML = "Elije imagen...";
             }
         }
 

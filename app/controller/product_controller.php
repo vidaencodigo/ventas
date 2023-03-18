@@ -14,19 +14,22 @@ class ProductController
     }
     public function get_form_new()
     {
-        $_SESSION['token'] =  bin2hex(random_bytes(35));
+        EventManager::valid_get();
+        $_SESSION['token'] =  bin2hex(random_bytes(35)); // genera token
         $categorias = $this->category->get_all();
         require_once $this->views_path . "new_product.php";
     }
 
     public function post_save_product()
     {
-
+        EventManager::valid_post();
+        
+        // token actual
         $token = $_REQUEST['token'];
-        $imgContenido = null;
-
+        // llama funcion para validar token actual
         EventManager::token_validation($token);
-
+        
+        $imgContenido = null;
         if (isset($_FILES['imagen'])) {
             $image = $_FILES['imagen']['tmp_name'];
             $imgContenido = file_get_contents($image);

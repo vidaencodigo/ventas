@@ -191,7 +191,7 @@
             let data = get_data();
             let url = "index.php?controller=product&action=post_save_product";
             try {
-                let resp = await axios.post(url, data)
+                let response = await axios.post(url, data)
                 console.log(response.data)
                 document.querySelector("#new_product").reset();
                 document.querySelector('.file--text').innerHTML = "Elije imagen...";

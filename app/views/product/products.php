@@ -130,7 +130,9 @@
                 grilla.innerHTML = "";
                 res.data.forEach(element => {
                     const c = document.createElement("card-component");
-                    c.setAttribute("data-name", `${element.nombre} - $ ${element.precio_unitario}`);
+                    c.setAttribute("data-id", element.id);
+                    c.setAttribute("data-name", element.nombre);
+                    c.setAttribute("data-priceU", element.precio_unitario)
                     c.setAttribute("data-image", "data:image/png;base64," + element.imagen);
                     grilla.appendChild(c);
                 });
@@ -155,7 +157,9 @@
                 grilla.innerHTML = "";
                 res.data.forEach(element => {
                     const c = document.createElement("card-component");
-                    c.setAttribute("data-name", `${element.nombre} - $ ${element.precio_unitario}`);
+                    c.setAttribute("data-id", element.id);
+                    c.setAttribute("data-name", element.nombre);
+                    c.setAttribute("data-priceU", element.precio_unitario)
                     c.setAttribute("data-image", "data:image/png;base64," + element.imagen);
                     grilla.appendChild(c);
                 });

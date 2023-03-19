@@ -52,72 +52,10 @@
             gap: 5px;
         }
 
-        /** */
-        .lds-ellipsis {
-            display: inline-block;
-            position: relative;
-            width: 80px;
-            height: 80px;
-        }
-
-        .lds-ellipsis div {
-            position: absolute;
-            top: 33px;
-            width: 13px;
-            height: 13px;
-            border-radius: 50%;
-            background: #483cd7;
-            animation-timing-function: cubic-bezier(0, 1, 1, 0);
-        }
-
-        .lds-ellipsis div:nth-child(1) {
-            left: 8px;
-            animation: lds-ellipsis1 0.6s infinite;
-        }
-
-        .lds-ellipsis div:nth-child(2) {
-            left: 8px;
-            animation: lds-ellipsis2 0.6s infinite;
-        }
-
-        .lds-ellipsis div:nth-child(3) {
-            left: 32px;
-            animation: lds-ellipsis2 0.6s infinite;
-        }
-
-        .lds-ellipsis div:nth-child(4) {
-            left: 56px;
-            animation: lds-ellipsis3 0.6s infinite;
-        }
-
-        @keyframes lds-ellipsis1 {
-            0% {
-                transform: scale(0);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes lds-ellipsis3 {
-            0% {
-                transform: scale(1);
-            }
-
-            100% {
-                transform: scale(0);
-            }
-        }
-
-        @keyframes lds-ellipsis2 {
-            0% {
-                transform: translate(0, 0);
-            }
-
-            100% {
-                transform: translate(24px, 0);
-            }
+       
+        .btn-categorias {
+            display: flex;
+            gap: 5px;
         }
     </style>
 </head>
@@ -174,72 +112,29 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="app/assets/js/alert.js"></script>
-
+    <script src="app/assets/js/productComponent.js"></script>
     <script>
-        class CardProduct extends HTMLElement {
-            constructor() {
-                super();
-            }
-            connectedCallback() {
-                const shadow = this.attachShadow({
-                    mode: 'open'
-                });
-                const style = document.createElement('style');
-                style.textContent = `
-                .card {
-                    background-color:#fff;
-                    border-radius:8px;
-                    padding:10px 15px; 
-                    display:flex;
-                    flex-direction:row;
-                    gap:10px;
-                    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-                  
-                }
-                .product--image{
-                    width:100%;
-                    height:80px;
-                    border-radius:8px;
-                }
-                `
-                const card = document.createElement("div");
-                card.setAttribute("class", "card");
-                const header = document.createElement("div");
-                const image = document.createElement("img");
-                image.setAttribute("class", "product--image");
-                image.src = this.getAttribute('data-image');
-                const body_card = document.createElement("div");
-                const name = document.createElement("p");
-                name.textContent = this.getAttribute('data-name');
-                header.appendChild(image);
-                card.appendChild(header);
-                body_card.appendChild(name);
-                card.appendChild(body_card);
-
-                shadow.appendChild(style);
-                shadow.appendChild(card);
-            }
-        }
-        customElements.define('card-product', CardProduct);
-
-
-
-
-        get_all_category();
+        document.addEventListener("DOMContentLoaded",()=>{
+            get_all_category();
+        })
 
         async function get_all_category() {
+            /**
+             * Renderiza todos los productos
+             */
             const grilla = document.querySelector(".grilla");
             grilla.innerHTML = `<div></div><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>`;
-
+            console.log("loading");
             try {
                 const res = await axios.get("index.php?controller=product&action=get_all_products");
                 grilla.innerHTML = "";
                 res.data.forEach(element => {
-                    const c = document.createElement("card-product");
+                    const c = document.createElement("card-component");
                     c.setAttribute("data-name", `${element.nombre} - $ ${element.precio_unitario}`);
                     c.setAttribute("data-image", "data:image/png;base64," + element.imagen);
                     grilla.appendChild(c);
                 });
+                console.log(res.data);
             } catch (error) {
                 console.log(error);
             }
@@ -248,19 +143,23 @@
         }
 
         async function get_by_category(category) {
+            /**
+             * Renderiza productos por @categoria
+             */
             const grilla = document.querySelector(".grilla");
             grilla.innerHTML = `<div></div><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>`;
-
+            console.log("loading");
             try {
                 const res = await axios.get("index.php?controller=product&action=get_all_products&categoria=" + category);
 
                 grilla.innerHTML = "";
                 res.data.forEach(element => {
-                    const c = document.createElement("card-product");
+                    const c = document.createElement("card-component");
                     c.setAttribute("data-name", `${element.nombre} - $ ${element.precio_unitario}`);
                     c.setAttribute("data-image", "data:image/png;base64," + element.imagen);
                     grilla.appendChild(c);
                 });
+                console.log(res.data);
             } catch (error) {
                 console.log(error);
             }

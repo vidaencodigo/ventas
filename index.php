@@ -23,7 +23,7 @@ if (!isset($_REQUEST['controller'])) {
             // comprueba que la accion este registrada
             $controller = ucwords($controller) . 'Controller';
             $controller = new $controller;
-            call_user_func(array($controller, $action));
+            call_user_func([$controller, $action]);
         } catch (\Throwable $th) {
             require_once $path_controller . "controller/error_controller.php";
             $controller = new ErrorController();

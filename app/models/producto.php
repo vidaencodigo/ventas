@@ -32,15 +32,15 @@ class Product extends Crud
         parent::__construct(self::TABLE);
         $this->pdo = parent::connect();
     }
-    public function get_all()
+    public function get_by_category($categoria)
     {
         /** reescribe get_all */
         try {
             //code...
-            $sql = "SELECT * FROM " . self::TABLE . " WHERE estatus=?";
+            $sql = "SELECT * FROM " . self::TABLE . " WHERE estatus=? AND id_categoria=?";
             $stm = $this->pdo->prepare($sql);
-            $stm->execute(array("active"));
-            $result= $stm->fetchall(\PDO::FETCH_OBJ);
+            $stm->execute(array("active", $categoria));
+            $result = $stm->fetchall(\PDO::FETCH_OBJ);
             /**
              * convert obj to array for use as json response
              */
@@ -49,7 +49,41 @@ class Product extends Crud
             foreach ($result as $producto) :
                 $data[] = array(
                     "id" => $producto->id,
-                    "codigo"=>$producto->codigo,
+                    "codigo" => $producto->codigo,
+                    "nombre" => $producto->nombre,
+                    "descripcion" => $producto->descripcion,
+                    "precio_unitario" => $producto->precio_unitario,
+                    "precio_proveedor" => $producto->precio_proveedor,
+                    "id_categoria" => $cat->get_by_id($producto->id_categoria)->nombre,
+                    "estatus" => $producto->estatus,
+                    "created" => $producto->created_at,
+                    "updated" => $producto->updated_at,
+                    "imagen" => base64_encode($producto->imagen)
+                );
+            endforeach;
+            return $data;
+        } catch (\PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+    public function get_all()
+    {
+        /** reescribe get_all */
+        try {
+            //code...
+            $sql = "SELECT * FROM " . self::TABLE . " WHERE estatus=?";
+            $stm = $this->pdo->prepare($sql);
+            $stm->execute(array("active"));
+            $result = $stm->fetchall(\PDO::FETCH_OBJ);
+            /**
+             * convert obj to array for use as json response
+             */
+            $data = array();
+            $cat = new Category();
+            foreach ($result as $producto) :
+                $data[] = array(
+                    "id" => $producto->id,
+                    "codigo" => $producto->codigo,
                     "nombre" => $producto->nombre,
                     "descripcion" => $producto->descripcion,
                     "precio_unitario" => $producto->precio_unitario,

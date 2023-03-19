@@ -20,7 +20,7 @@
             gap: 8px;
             width: 100%;
         }
-        .formulario--content {
+        .container--content {
             padding: 20px 18px;
             border-radius: 15px;
             background-color: #fff;
@@ -30,7 +30,7 @@
             width: 60%;
             box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
         }
-        .formulario {
+        .container {
             height: 100vh;
             background-color: #F4F8FB;
             width: 80%;
@@ -63,7 +63,7 @@
                     </a>
                 </li>
                 <li class="active">
-                    <a href="index.php?controller=product&action=get_form_new" class="link">
+                    <a href="index.php?controller=product&action=get_view_products" class="link">
                         <i class="fa-solid fa-file"></i>
                         Productos
                     </a>
@@ -71,8 +71,8 @@
             </ul>
         </aside>
 
-        <section class="formulario">
-            <div class="formulario--content">
+        <section class="container">
+            <div class="container--content">
                 <h3>
                     Registra nuevo producto
                 </h3>

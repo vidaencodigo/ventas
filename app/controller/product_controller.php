@@ -18,11 +18,28 @@ class ProductController
         $_SESSION['token'] =  bin2hex(random_bytes(35)); // genera token
 
         $categorias = $this->category->get_all();
-       
-       
+
+
         require_once $this->views_path . "new_product.php";
     }
+    public function get_view_products()
+    {
+        EventManager::valid_get();
+        $categorias = $this->category->get_all();
+        require_once $this->views_path . "products.php";
+    }
+    public function get_all_products()
+    {
+        EventManager::valid_get();
+        
+        if (isset($_REQUEST['categoria'])) {
+            $productos = $this->product->get_by_category($_REQUEST['categoria']);
+        } else {
 
+            $productos = $this->product->get_all();
+        }
+        echo json_encode($productos);
+    }
     public function post_save_product()
     {
         EventManager::valid_post();
@@ -46,9 +63,9 @@ class ProductController
         $nuevo_producto->precio_proveedor = $_REQUEST['precio_p'];
         $nuevo_producto->imagen = $imgContenido;
         $nuevo_producto->id_categoria = $_REQUEST['categoria'];
-        //$nuevo_producto->nuevo();
+        $nuevo_producto->nuevo();
         $productos = $this->product->get_all();
-        echo json_encode(array("message" => "Exito", "data"=>$productos));
+        echo json_encode(array("message" => "Exito", "data" => $productos));
         exit;
     }
 }

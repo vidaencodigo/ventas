@@ -1,6 +1,7 @@
 <?php
 
 require_once "core/crud.php";
+require_once "app/models/categorias.php";
 class producto
 {
     public $id;
@@ -44,6 +45,7 @@ class Product extends Crud
              * convert obj to array for use as json response
              */
             $data = array();
+            $cat = new Category();
             foreach ($result as $producto) :
                 $data[] = array(
                     "id" => $producto->id,
@@ -52,7 +54,7 @@ class Product extends Crud
                     "descripcion" => $producto->descripcion,
                     "precio_unitario" => $producto->precio_unitario,
                     "precio_proveedor" => $producto->precio_proveedor,
-                    "id_categoria" => $producto->id_categoria,
+                    "id_categoria" => $cat->get_by_id($producto->id_categoria)->nombre,
                     "estatus" => $producto->estatus,
                     "created" => $producto->created_at,
                     "updated" => $producto->updated_at,

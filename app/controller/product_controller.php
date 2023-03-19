@@ -46,7 +46,7 @@ class ProductController
         $nuevo_producto->precio_proveedor = $_REQUEST['precio_p'];
         $nuevo_producto->imagen = $imgContenido;
         $nuevo_producto->id_categoria = $_REQUEST['categoria'];
-        $nuevo_producto->nuevo();
+        //$nuevo_producto->nuevo();
         $productos = $this->product->get_all();
         echo json_encode(array("message" => "Exito", "data"=>$productos));
         exit;

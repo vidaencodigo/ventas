@@ -16,19 +16,22 @@ class ProductController
     {
         EventManager::valid_get();
         $_SESSION['token'] =  bin2hex(random_bytes(35)); // genera token
+
         $categorias = $this->category->get_all();
+       
+       
         require_once $this->views_path . "new_product.php";
     }
 
     public function post_save_product()
     {
         EventManager::valid_post();
-        
+
         // token actual
         $token = $_REQUEST['token'];
         // llama funcion para validar token actual
         EventManager::token_validation($token);
-        
+
         $imgContenido = null;
         if (isset($_FILES['imagen'])) {
             $image = $_FILES['imagen']['tmp_name'];
@@ -44,9 +47,8 @@ class ProductController
         $nuevo_producto->imagen = $imgContenido;
         $nuevo_producto->id_categoria = $_REQUEST['categoria'];
         $nuevo_producto->nuevo();
-        echo json_encode(array("message" => "Exito"));
+        $productos = $this->product->get_all();
+        echo json_encode(array("message" => "Exito", "data"=>$productos));
         exit;
     }
-
-    
 }

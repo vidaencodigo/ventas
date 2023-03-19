@@ -15,7 +15,7 @@ class EventManager
          */
         if (!$token || $token !== $_SESSION['token']) {
             // show an error message 
-            echo json_encode(["message" => "Token invalido"]);
+            echo json_encode(array("message" => "Token invalido"));
             exit;
         }
         return true;

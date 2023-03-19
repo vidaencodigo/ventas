@@ -18,17 +18,29 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            width: 60%;
+            width: 100%;
         }
-
+        .formulario--content {
+            padding: 20px 18px;
+            border-radius: 15px;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 60%;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        }
         .formulario {
+            height: 100vh;
+            background-color: #F4F8FB;
             width: 80%;
             padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
             
+            gap: 16px;
+
         }
     </style>
 </head>
@@ -60,72 +72,75 @@
         </aside>
 
         <section class="formulario">
-            <h3>
-                Registra nuevo producto
-            </h3>
-            <form id="new_product" class="form">
-                <input type="hidden" id="token" value="<?php echo $_SESSION['token'] ?>">
-                <div class="input--group">
-                    <label for="codigo">Código</label>
-                    <div class="icon--input">
-                        <span>
-                            <i class="fa-solid fa-barcode"></i>
-                        </span>
-                        <input type="text" name="codigo" id="codigo" placeholder="Escribe el código..." required>
+            <div class="formulario--content">
+                <h3>
+                    Registra nuevo producto
+                </h3>
+                <form id="new_product" class="form">
+                    <input type="hidden" id="token" value="<?php echo $_SESSION['token'] ?>">
+                    <div class="input--group">
+                        <label for="codigo">Código</label>
+                        <div class="icon--input">
+                            <span>
+                                <i class="fa-solid fa-barcode"></i>
+                            </span>
+                            <input type="text" name="codigo" id="codigo" placeholder="Escribe el código..." required>
+                        </div>
                     </div>
-                </div>
 
-                <div class="input--group">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" class="input--form" name="nombre" id="nombre" required>
-                </div>
-
-                <div class="input--group">
-                    <label for="descripcion">Descripción</label>
-                    <input type="text" class="input--form" name="descripcion" id="descripcion">
-                </div>
-
-                <div class="input--group">
-                    <label for="precio_u">Precio unitario</label>
-                    <div class="icon--input">
-                        <span>
-                            <i class="fa-solid fa-dollar-sign"></i>
-                        </span>
-                        <input type="number" step="any" name="precio_u" id="precio_u" value="0">
+                    <div class="input--group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="input--form" name="nombre" id="nombre" required>
                     </div>
-                </div>
 
-                <div class="input--group">
-                    <label for="precio_p">Precio proveedor</label>
-                    <div class="icon--input">
-                        <span>
-                            <i class="fa-solid fa-dollar-sign"></i>
-                        </span>
-                        <input type="number" step="any" name="precio_p" id="precio_p" value="0">
+                    <div class="input--group">
+                        <label for="descripcion">Descripción</label>
+                        <input type="text" class="input--form" name="descripcion" id="descripcion">
                     </div>
-                </div>
-                <div class="input--group">
-                    <label for="categories">Categoría</label>
-                    <select name="categoria" id="categoria" class="input--form">
-                        <?php foreach ($categorias as $categoria) : ?>
-                            <option value="<?= $categoria->id ?>"><?= $categoria->nombre ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="input--group--file">
-                    <label for="imagen" class="file--custom">
-                        <i class="fa-solid fa-upload"></i>
-                        <span class="file--text">
-                            Elije el archivo...
-                        </span>
-                    </label>
-                    <input type="file" class="file--form" name="imagen" id="imagen" accept=".jpg, .jpeg, .png">
-                </div>
-                <div class="buttons">
 
-                    <button type="button" class="button success" id="save"> <i class="fa-solid fa-paper-plane"></i> Guardar</button>
-                </div>
-            </form>
+                    <div class="input--group">
+                        <label for="precio_u">Precio unitario</label>
+                        <div class="icon--input">
+                            <span>
+                                <i class="fa-solid fa-dollar-sign"></i>
+                            </span>
+                            <input type="number" step="any" name="precio_u" id="precio_u" value="0">
+                        </div>
+                    </div>
+
+                    <div class="input--group">
+                        <label for="precio_p">Precio proveedor</label>
+                        <div class="icon--input">
+                            <span>
+                                <i class="fa-solid fa-dollar-sign"></i>
+                            </span>
+                            <input type="number" step="any" name="precio_p" id="precio_p" value="0">
+                        </div>
+                    </div>
+                    <div class="input--group">
+                        <label for="categories">Categoría</label>
+                        <select name="categoria" id="categoria" class="input--form">
+                            <?php foreach ($categorias as $categoria) : ?>
+                                <option value="<?= $categoria->id ?>"><?= $categoria->nombre ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="input--group--file">
+                        <label for="imagen" class="file--custom">
+                            <i class="fa-solid fa-upload"></i>
+                            <span class="file--text">
+                                Elije el archivo...
+                            </span>
+                        </label>
+                        <input type="file" class="file--form" name="imagen" id="imagen" accept=".jpg, .jpeg, .png">
+                    </div>
+                    <div class="buttons">
+
+                        <button type="button" class="button success" id="save"> <i class="fa-solid fa-paper-plane"></i> Guardar</button>
+                    </div>
+                </form>
+            </div>
+
         </section>
 
     </main>

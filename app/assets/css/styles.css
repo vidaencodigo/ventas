@@ -18,6 +18,7 @@
 
 body {
     font-weight: 500;
+    background-color: #F4F8FB;
 }
 
 .nav {
@@ -37,11 +38,12 @@ body {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    
 }
 
 .nav--lateral li {
     cursor: pointer;
-    padding: 6px 10px;
+    padding: 10px 15px;
     width: 100%;
     
 
@@ -61,6 +63,8 @@ body {
 .menu--lateral {
     width: 20%;
     padding: 10px 0px;
+    background-color: #fff;
+    border-right:solid 2px #f2f2f2;
 }
 
 /**
